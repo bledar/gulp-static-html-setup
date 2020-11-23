@@ -11,6 +11,7 @@ var paths = {
     styles: {
         // By using styles/**/*.sass we're telling gulp to check all folders for any sass file
         src: "src/scss/*.scss",
+        src_file: "src/scss/app.scss",
         // Compiled files will end up in whichever folder it's found in (partials are not compiled)
         dest: "public/css"
     }
@@ -28,7 +29,7 @@ function style() {
     // My .sass files are stored in the styles folder
     // (If you want to use scss files, simply look for *.scss files instead)
     return gulp
-        .src(paths.styles.src)
+        .src(paths.styles.src_file)
         .pipe(sass())
         .on("error", sass.logError)
         .pipe(postcss([autoprefixer(), cssnano()]))
@@ -41,7 +42,8 @@ function reload() {
 }
 
 function inject(){
-    return gulp.src('./src/index.html')
+    return gulp.src('./src/*.html')
+        // .pipe(injectPartials({ removeTags:true }))
         .pipe(injectPartials())
         .pipe(gulp.dest('./public'));
 }
